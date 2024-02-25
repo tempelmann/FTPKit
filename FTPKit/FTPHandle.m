@@ -47,7 +47,7 @@
         self.modified = [aAttributes objectForKey:(id)kCFFTPResourceModDate];
 		self.group = [aAttributes objectForKey:(id)kCFFTPResourceGroup];
 		self.link = [aAttributes objectForKey:(id)kCFFTPResourceLink];
-		self.mode = [[aAttributes objectForKey:(id)kCFFTPResourceSize] intValue];
+		self.mode = [[aAttributes objectForKey:(id)kCFFTPResourceMode] intValue];
 		self.name = [aAttributes objectForKey:(id)kCFFTPResourceName];
 		self.owner = [aAttributes objectForKey:(id)kCFFTPResourceOwner];
 		self.size = [[aAttributes objectForKey:(id)kCFFTPResourceSize] unsignedLongLongValue];
@@ -77,6 +77,19 @@
         self.path = aPath;
     }
     return self;
+}
+
+- (NSDictionary *)attributes {
+    NSMutableDictionary *result = [NSMutableDictionary dictionaryWithCapacity:8];
+    result[(NSString *)kCFFTPResourceSize] = @(self.size);
+    result[(NSString *)kCFFTPResourceType] = @(self.type);
+    result[(NSString *)kCFFTPResourceMode] = @(self.mode);
+    if (self.link) result[(NSString *)kCFFTPResourceLink] = self.link;
+    if (self.name) result[(NSString *)kCFFTPResourceName] = self.name;
+    if (self.group) result[(NSString *)kCFFTPResourceGroup] = self.group;
+    if (self.owner) result[(NSString *)kCFFTPResourceOwner] = self.owner;
+    if (self.modified) result[(NSString *) kCFFTPResourceModDate] = self.modified;
+    return result;
 }
 
 - (NSString *)permissions
