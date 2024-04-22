@@ -111,6 +111,22 @@
     return [path stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 
+- (NSString*)sendCommand:(NSString *)command
+{
+    if (conn == NULL) {
+        conn = [self newConnection];
+    }
+    if (conn == NULL)
+        return nil;
+    BOOL success = [self sendCommand:command conn:conn];
+    NSString *response = [NSString stringWithCString:FtpLastResponse(conn) encoding:NSUTF8StringEncoding];
+    if (! success) {
+        self.lastError = [NSError FTPKitErrorWithResponse:response];
+        return nil;
+    }
+    return response;
+}
+
 - (long long int)fileSizeAtPath:(NSString *)path
 {
     if (conn == NULL) {

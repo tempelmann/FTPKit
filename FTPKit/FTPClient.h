@@ -26,6 +26,8 @@
  */
 @property (nonatomic, readonly) NSError *lastError;
 
+- (NSString*)sendCommand:(NSString *)command;
+
 /**
  Factory method to create FTPClient instance.
  

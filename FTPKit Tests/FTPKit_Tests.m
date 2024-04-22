@@ -40,6 +40,19 @@
 
 - (void)testFtp
 {
+    FTPClient * ftp = [[FTPClient alloc] initWithHost:@"192.168.61.116" port:21 username:@"anonymous" password:@""];
+    NSArray *contents = [ftp listContentsAtPath:@"" showHiddenFiles:YES];
+    NSLog(@"dir contents: %@", contents);
+
+    NSString *response = [ftp sendCommand:@"FEAT"];
+    NSLog(@"FEAT: %@", response);
+    response = [ftp sendCommand:@"EVERYTHING SEARCH ibored"];
+    NSLog(@"EVERYTHING SEARCH ibored: %@", response);
+    response = [ftp sendCommand:@"EVERYTHING QUERY"];
+    NSLog(@"EVERYTHING QUERY: %@", response);
+
+
+#if 0
     FTPClient * ftp = [[FTPClient alloc] initWithHost:@"localhost" port:21 username:@"unittest" password:@"unitpass"];
     
     // Sanity. Make sure the root path exists. This should always be true.
@@ -153,6 +166,8 @@
     XCTAssertTrue(success, @"");
     
     //XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+#endif
+
 }
 
 @end

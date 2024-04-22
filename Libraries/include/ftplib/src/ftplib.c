@@ -388,7 +388,7 @@ static int readline(char *buf, int max, netbuf *ctl)
             x = (max >= ctl->cavail) ? ctl->cavail : max-1;
             end = memccpy(bp,ctl->cget,'\n',x);
             if (end != NULL)
-                x = end - bp;
+                x = (int) (end - bp);
             retval += x;
             bp += x;
             *bp = '\0';
@@ -552,6 +552,7 @@ static int readresp(char c, netbuf *nControl)
  */
 GLOBALDEF void FtpInit(void)
 {
+	(void)version;	// to stop the "unused" warning
 #if defined(_WIN32)
     WORD wVersionRequested;
     WSADATA wsadata;
@@ -1436,7 +1437,7 @@ static int FtpXfer(const char *localfile, const char *path,
     dbuf = malloc(FTPLIB_BUFSIZ);
     if (typ == FTPLIB_FILE_WRITE)
     {
-        while ((l = fread(dbuf, 1, FTPLIB_BUFSIZ, local)) > 0)
+        while ((l = (int) fread(dbuf, 1, FTPLIB_BUFSIZ, local)) > 0)
         {
             if ((c = FtpWrite(dbuf, l, nData)) < l)
             {
